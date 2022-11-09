@@ -33,7 +33,10 @@ const keys = obj =>
 
         for (let key in obj) 
         {
+            if(typeof (obj[key])!=`function`)
+            {
             result.push(key);
+            }
         }
     return result;
 }
