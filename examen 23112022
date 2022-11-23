@@ -13,7 +13,7 @@ function aleatorio(resul,max,min)
         
         }
         return arr.sort();
-    }else(console.log("te he dicho que pases numeros :)"))
+    }else console.log("te he dicho que pases numeros :)");
 
 }
 
