@@ -1,0 +1,122 @@
+
+
+//ejercicio1
+function aleatorio(resul,max,min)
+{
+    arr=[];
+    if(typeof resul==="number")
+    {
+        for(let i=0;i<resul;i++){
+
+        arr.push(Math.round(Math.random() * (max - min) + min) );//mete en el array un numero aleatorio comprendido entre el max y el min y los redondea 
+
+        
+        }
+        return arr.sort();
+    }else(console.log("te he dicho que pases numeros :)"))
+
+}
+
+console.log(aleatorio("difyhd", 10,20));
+
+//ejercicio2
+function tajada(arr,principio,final)
+{
+    let resul=[];
+    if(Array.isArray(arr))//comprobamos si es un array si no es se va directamente al else
+    {
+        for(i=principio;i<final;i++)
+        {
+            resul.push(arr[i])
+
+        }
+    return resul;
+    }else console.log("ponme un array plsss")
+}
+
+console.log(tajada([3, 2, 30, 4], 1, 3)); 
+
+
+//ejercicio3
+
+function romboTruncado(num)
+{
+    {
+
+        let espacios=num-1;
+        let asteriscos=1;
+        let string;
+        let rombo="";
+        if(typeof num==="number" || num<1 || num != null)
+        {
+            for (let i=1;i<=num;i++)
+            {
+                string="";
+    
+                for (let j=1;j<=espacios;j++)
+                {
+                    string+=".";
+                }
+    
+                    for (let j=1;j<=asteriscos;j++)
+                    {
+                        for(let k=0;k<num;k++)
+                        {
+                            if (j==1 || j==asteriscos)
+
+                            {
+                                string+="*";
+                            }
+                            else
+                            {
+                                string+=".";
+                            }
+                        }
+                    
+                }
+    
+                asteriscos+=2;
+                espacios-=1;
+    
+                rombo+= string+"\n";
+    
+            }
+    
+            //PARTE DE ABAJO
+            espacios=1;
+            asteriscos=(num*2)-3;
+    
+            for (let i=1;i<=num-1;i++)
+            {
+                string="";
+                for (let j=1;j<=espacios;j++)
+                {
+                    string+=".";
+                }
+    
+                for (let j=1;j<=asteriscos;j++)
+                {
+                    if (j==1 || j==asteriscos)
+                    {
+                        string+="*";
+                    }
+                    else
+                    {
+                        string+=".";
+                    }
+                }
+    
+                asteriscos-=2;
+                espacios+=1;
+                rombo+=string + "\n";
+            }
+            (console.log(rombo))
+    
+    
+        }else console.log("ERES POCO LISTO");
+    
+
+    }
+}
+
+romboTruncado(4); // mostrará por consola el siguiente rombo:
