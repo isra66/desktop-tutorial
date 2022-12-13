@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <title>juego de las palabras</title>
+</head>
+
+<body>
+
+    <div class="container text-center">
+        <div class="row align-items-start">
+            <div class="col">
+
+            </div>
+            <div class="col-8" style="margin-top: 10%;">
+                <form class="form-label" id="formulario" action="#" method="get">
+
+                    <p id="letra"></p>
+
+                    <input type="text" value="" id="mensaje">
+
+                    <br> <br> <button class="btn btn-info" type="submit">Enviar palabra </button>
+                    <br> <br>
+                    <span id="countdown"></span>
+                    <br> <br>
+                    <p id="acertadas"></p>
+                    <p id="falladas"></p>
+                    <p id="listasPalabras"></p>
+            </div>
+            <div class="col">
+
+
+            </div>
+        </div>
+    </div>
+    </form>
+
+
+
+
+
+
+
+    <script>
+        "use strict";
+
+        let letra = '';
+        let listPalabras = [];
+
+        //cronometro
+        window.onload = updateClock;
+        let tiempoTotal = 10;
+        function updateClock() {
+            document.getElementById('countdown').innerHTML = tiempoTotal;
+            if (tiempoTotal == 0) {
+                console.log('Final');
+            } else {
+                tiempoTotal -= 1;
+                setTimeout("updateClock()", 1000);
+            }
+
+            if (tiempoTotal === 0) {
+                document.getElementById('formulario').innerHTML = "HAS PERDIDO MA G";//para cuando acaba el tiempo te diga que has perdido
+            }
+        }
+        function letraAleatoria(num) {//le paso el parametro num que es las letras que quiero que me saque en este caso es siempre 1 
+            const caracteres = 'abcdefghijklmnopqrstuvwxyz';
+
+            const lenghtCaracter = caracteres.length;
+            for (let i = 0; i < num; i++) {
+                letra = caracteres.charAt(Math.floor(Math.random() * lenghtCaracter));//voy machacando para sacar una letra nueva cada vez que actualiza
+            }
+
+            return letra;
+        }
+
+        letraAleatoria(1);
+        //console.log(letra);
+
+
+        document.getElementById('letra').innerHTML = "<h3>escribe una letra que empieze por: " + letra + "</h3>";
+        let contadorAcertadas = 0;
+        let contadorFalladas = 0;
+
+        function comprobarPalabras(palabraBusqueda) {
+
+            if (palabraBusqueda[0] === letra) //si la primera letra es igual a la letra aleatoria
+            {
+
+
+                alert("has ganado");
+                contadorAcertadas++;//sumo las acertadas
+                document.getElementById('acertadas').innerHTML = "<h3>acertadas: " + contadorAcertadas + "</h3>";
+                let letra = letraAleatoria(1);//saco otra aleatoria
+
+                document.getElementById('letra').innerHTML = "<h3>escribe una letra que empieze por: " + letra + "</h3>";
+
+                //lista de palabras
+
+                listPalabras.push(palabraBusqueda);
+                document.getElementById('listasPalabras').innerHTML = "<h3>Lista de palabras acertadas: " + listPalabras + "</h3>";
+                tiempoTotal = 10;
+
+
+            } else {
+                alert("has perdido");
+                contadorFalladas++;
+                document.getElementById('falladas').innerHTML = "<h3>falladas: " + contadorFalladas + "</h3>";
+
+            }
+
+        }
+
+
+
+
+        document.getElementById("formulario").addEventListener("submit", (evento) =>//esto se ejcuta cada vez ue se envia la informacion
+        {
+            evento.preventDefault();
+            console.log(evento);
+            let palabraBusqueda = document.getElementById("mensaje").value;//metemos la palabra en una variable
+            comprobarPalabras(palabraBusqueda);
+            document.getElementById("mensaje").value = "";//borramos la palabra
+
+
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
