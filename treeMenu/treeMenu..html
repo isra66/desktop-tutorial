@@ -66,24 +66,33 @@
      
     }
 
- 
-    arbol.onclick = function(event)
-    {
+    
 
-      if (event.target.tagName != 'SPAN') 
+ 
+   arbol.addEventListener("click",evento =>
+   {
+
+    
+    if (event.target.tagName != 'SPAN') 
       {
         return;
       }
+      
 
       let contenedorHijo = event.target.parentNode.querySelector('ul');
       alert(contenedorHijo);
+
       if (!contenedorHijo)
       {
         return;
       }
 
       contenedorHijo.hidden = !contenedorHijo.hidden;
-    }
+  
+
+   })
+    
+
   </script>
 
 </body>
