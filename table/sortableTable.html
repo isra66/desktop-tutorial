@@ -75,38 +75,33 @@
       let filasArray = Array.from(tbody.rows);
 
       // comparo las dos filas(numero y string)
-      let compare;
+      let comparar;
 
       switch (type) {
         case 'number':
-          compare = function(filaA, filaB) {
-            let resul;
+          comparar = function(filaA, filaB) {
+           let resul;
             resul =  filaA.cells[colNum].innerHTML - filaB.cells[colNum].innerHTML;
             return resul;
           };
           break;
+
         case 'string':
-          compare = function(filaA, filaB) {
-            resul = filaA.cells[colNum].innerHTML > filaB.cells[colNum].innerHTML ? 1 : -1;
-            return resul;
+          comparar = function(filaA, filaB) {
+            if(filaA.cells[colNum].innerHTML > filaB.cells[colNum].innerHTML)
+            {
+              return 1
+            }else return -1
+           
           };
           break;
       }
 
       // ordenamos
-      filasArray.sort(compare);
+      filasArray.sort(comparar);
 
       tbody.append(...filasArray);
     }
-
-
-
-  
-
-
-
-
-
 
 
   </script>
