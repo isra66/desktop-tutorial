@@ -1,0 +1,26 @@
+input:valid {
+    border-color: green;
+    }
+    
+    input:invalid {
+    border-color: red;
+    }
+    
+    input:focus:invalid {
+    background-color: #ffe6e6;
+    }
+    
+    .error-msg {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: none;
+    }
+    
+    .error {
+    border-color: red !important;
+    }
+    
+    .valid {
+    border-color: green !important;
+    }
