@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios y Posts</title>
+</head>
+
+<body>
+    <div id="lista-usuarios"></div>
+    <div id="lista-posts"></div>
+    <div id="detalles-post"></div>
+    <script>
+        async function obtenerUsuarios() {
+            const respuesta = await fetch('https://jsonplaceholder.typicode.com/users');
+            const datos = await respuesta.json();
+            const listaUsuarios = document.getElementById('lista-usuarios');
+            listaUsuarios.innerHTML = '';
+            datos.forEach(usuario => {
+                const usuarioDiv = document.createElement('div');
+                usuarioDiv.innerHTML = `
+                    <h3>${usuario.name}</h3>
+                    <p><strong>Nombre de usuario:</strong> ${usuario.username}</p>
+                    <p><strong>Sitio web:</strong> ${usuario.website}</p>
+                    <button onclick="obtenerPosts(${usuario.id})">Ver posts</button>
+                `;
+                listaUsuarios.appendChild(usuarioDiv);
+            });
+        }
+        async function obtenerPosts(idUsuario) {
+            const respuesta = await fetch(`https://jsonplaceholder.typicode.com/users/${idUsuario}/posts`);
+            const datos = await respuesta.json();
+            const listaPosts = document.getElementById('lista-posts');
+            listaPosts.innerHTML = '';
+            datos.forEach(async post => {
+                const respuestaUsuario = await fetch(`https://jsonplaceholder.typicode.com/users/${post.userId}`);
+                const datosUsuario = await respuestaUsuario.json();
+                post.usuario = datosUsuario;
+                const postDiv = document.createElement('div');
+                postDiv.innerHTML = `
+            <h3>${post.title}</h3>
+            <button onclick="obtenerDetallesPost(${post.id})">Ver post</button>
+        `;
+                listaPosts.appendChild(postDiv);
+            });
+            const botonVolver = document.createElement('button');
+            botonVolver.textContent = 'Volver a la lista de usuarios';
+            botonVolver.addEventListener('click', obtenerUsuarios);
+            listaPosts.appendChild(botonVolver);
+        }
+
+        async function obtenerDetallesPost(idPost) {
+            const respuestaPost = await fetch(`https://jsonplaceholder.typicode.com/posts/${idPost}`);
+            const datosPost = await respuestaPost.json();
+            const respuestaUsuario = await fetch(`https://jsonplaceholder.typicode.com/users/${datosPost.userId}`);
+            const datosUsuario = await respuestaUsuario.json();
+            const respuestaComentarios = await fetch(`https://jsonplaceholder.typicode.com/posts/${idPost}/comments`);
+            const datosComentarios = await respuestaComentarios.json();
+            const detallesPost = document.getElementById('detalles-post');
+            detallesPost.innerHTML = `
+                <h3>${datosPost.title}</h3>
+                <p><strong>Nombre de usuario:</strong> ${datosUsuario.username}</p>
+                <p>${datosPost.body}</p>
+                <h4>Comentarios:</h4>
+            `;
+            datosComentarios.forEach(comentario => {
+                const comentarioDiv = document.createElement('div');
+                comentarioDiv.innerHTML = `
+                    <h5>${comentario.name}</h5>
+                    <p>${comentario.body}</p>
+                `;
+                detallesPost.appendChild(comentarioDiv);
+            });
+            const botonVolverPosts = document.createElement('button');
+            botonVolverPosts.textContent = 'Volver a la lista de posts del usuario';
+            botonVolverPosts.addEventListener('click', () => obtenerPosts(datosPost.userId));
+            detallesPost.appendChild(botonVolverPosts);
+            const botonVolverUsuarios = document.createElement('button');
+            botonVolverUsuarios.textContent = 'Volver a la lista de usuarios';
+            botonVolverUsuarios.addEventListener('click', obtenerUsuarios);
+            detallesPost.appendChild(botonVolverUsuarios);
+        }
+
+        obtenerUsuarios();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aplicación JSONPlaceholder</title>
+  </head>
+  <body>
+    <h1>Lista de Usuarios</h1>
+    <ul id="lista-usuarios"></ul>
+
+    <script>
+        const listaUsuarios = document.getElementById('lista-usuarios');
+        
+        async function obtenerDatosUsuarios() {
+          try {
+            const respuesta = await fetch('https://jsonplaceholder.typicode.com/users');
+            const usuarios = await respuesta.json();
+            return usuarios;
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        
+        async function obtenerTareas(idUsuario) {
+          try {
+            const respuesta = await fetch(`https://jsonplaceholder.typicode.com/users/${idUsuario}/todos`);
+            const tareas = await respuesta.json();
+            return tareas;
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        
+        async function mostrarTareas(idUsuario) {
+          try {
+            const tareas = await obtenerTareas(idUsuario);
+            const tareasCompletadas = tareas.filter(tarea => tarea.completed);
+            const tareasPendientes = tareas.filter(tarea => !tarea.completed);
+            const listaTareas = document.createElement('div');
+            const listaTareasCompletadas = document.createElement('ul');
+            const listaTareasPendientes = document.createElement('ul');
+            listaTareasCompletadas.innerHTML = '<h2>Tareas Completadas</h2>';
+            listaTareasPendientes.innerHTML = '<h2>Tareas Pendientes</h2>';
+            tareasCompletadas.forEach(tarea => {
+              const li = document.createElement('li');
+              li.innerText = tarea.title;
+              listaTareasCompletadas.appendChild(li);
+            });
+            tareasPendientes.forEach(tarea => {
+              const li = document.createElement('li');
+              li.innerText = tarea.title;
+              listaTareasPendientes.appendChild(li);
+            });
+            listaTareas.appendChild(listaTareasCompletadas);
+            listaTareas.appendChild(listaTareasPendientes);
+            document.body.appendChild(listaTareas);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        
+        async function mostrarUsuarios() {
+          try {
+            const usuarios = await obtenerDatosUsuarios();
+            usuarios.forEach(usuario => {
+              const li = document.createElement('li');
+              li.innerHTML = `<h2>${usuario.name} (@${usuario.username})</h2><p>${usuario.website}</p>`;
+              const boton = document.createElement('button');
+              boton.innerText = 'Ver Tareas';
+              boton.addEventListener('click', () => {
+                mostrarTareas(usuario.id);
+              });
+              li.appendChild(boton);
+              listaUsuarios.appendChild(li);
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        
+        mostrarUsuarios();
+      </script>
+  </body>
+</html>      
