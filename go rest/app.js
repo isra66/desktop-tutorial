@@ -10,12 +10,10 @@ const usersLink = document.querySelector('#users-link');
 const postsLink = document.querySelector('#posts-link');
 
 
-usersLink.addEventListener('click', mostrarUsuario);
-postsLink.addEventListener('click', mostrarPosts);
 
 
-function mostrarUsuario(event) {
-    event.preventDefault();
+function mostrarUsuario() {
+  
     fetch(BASE_URL + 'users', { headers })
         .then(response => response.json())
         .then(users => {
@@ -29,8 +27,8 @@ function mostrarUsuario(event) {
         });
 }
 
-function mostrarPosts(event) {
-    event.preventDefault();
+function mostrarPosts() {
+    
     fetch(BASE_URL + 'posts', { headers })
         .then(response => response.json())
         .then(posts => {
@@ -45,14 +43,29 @@ function mostrarPosts(event) {
 
 
 
-const FormBuscadorUsuario = document.querySelector('#formUsuarios');
+usersLink.addEventListener('click',  (event) => {
 
-FormBuscadorUsuario.addEventListener('submit', buscarUsuarios);
-
-function buscarUsuarios(event) {
     event.preventDefault();
-    const searchInput = document.querySelector('#user-search-input').value;
-    fetch(BASE_URL + `users?name=${searchInput}`, { headers })
+    mostrarUsuario();
+
+
+});
+
+
+
+postsLink.addEventListener('click', (event) => {
+
+    event.preventDefault();
+    mostrarPosts();
+
+
+});
+
+
+function buscarUsuarios() {
+  
+    const buscador = document.querySelector('#user-search-input').value;
+    fetch(BASE_URL + `users?name=${buscador}`, { headers })
         .then(response => response.json())
         .then(users => {
             contentDiv.innerHTML = '';
@@ -63,3 +76,19 @@ function buscarUsuarios(event) {
             }
         });
 }
+
+
+
+
+const FormBuscadorUsuario = document.querySelector('#formUsuarios');
+
+FormBuscadorUsuario.addEventListener('submit', (event=>{
+
+    event.preventDefault();
+    buscarUsuarios();
+
+
+
+
+}));
+
